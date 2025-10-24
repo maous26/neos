@@ -1,0 +1,340 @@
+{
+  "m3u_summary": {
+    "total_channels": 140400,
+    "groups_top": [
+      [
+        "S\u00e9ries ANIM\u00c9ES POUR ADULTES",
+        14786
+      ],
+      [
+        "S\u00e9ries NETFLIX",
+        12505
+      ],
+      [
+        "S\u00e9ries VARIETY",
+        11672
+      ],
+      [
+        "S\u00e9ries PRIME VIDEO",
+        9673
+      ],
+      [
+        "S\u00e9ries ARABES",
+        8985
+      ],
+      [
+        "S\u00e9ries DISNEY PLUS",
+        8103
+      ],
+      [
+        "S\u00e9ries CANAL+",
+        7727
+      ],
+      [
+        "S\u00e9ries TURQUES VOSTAR",
+        5830
+      ],
+      [
+        "S\u00e9ries DESSINS ANIM\u00c9S",
+        5690
+      ],
+      [
+        "S\u00e9ries SUB-AR",
+        5412
+      ],
+      [
+        "FR: FILMS - SD",
+        4037
+      ],
+      [
+        "S\u00e9ries PARAMOUNT+",
+        3319
+      ],
+      [
+        "S\u00e9ries TF1+ | M6+ | FTV",
+        2858
+      ],
+      [
+        "S\u00e9ries HBO MAX",
+        2515
+      ],
+      [
+        "ES:Movies - pel\u00edculas",
+        2100
+      ],
+      [
+        "S\u00e9ries DOCUMENTAIRES",
+        1817
+      ],
+      [
+        "Radio",
+        1563
+      ],
+      [
+        "FR: FILMS - Comedies",
+        1464
+      ],
+      [
+        "FR: FILMS - Drames",
+        1313
+      ],
+      [
+        "S\u00e9ries CARTOON ARABY",
+        1241
+      ],
+      [
+        "IT: MOVIES",
+        1204
+      ],
+      [
+        "S\u00e9ries APPLE TV+",
+        1200
+      ],
+      [
+        "S\u00e9ries ALGERIENNES",
+        1199
+      ],
+      [
+        "AR:SUBT \u0623\u0641\u0644\u0627\u0645 \u0645\u062a\u0631\u062c\u0645\u0629",
+        983
+      ],
+      [
+        "S\u00e9ries CRAVE",
+        935
+      ]
+    ],
+    "countries_counts": [
+      [
+        "FR",
+        14183
+      ],
+      [
+        "AR",
+        7907
+      ],
+      [
+        "SD",
+        4215
+      ],
+      [
+        "HD",
+        3564
+      ],
+      [
+        "VF",
+        3528
+      ],
+      [
+        "TV",
+        2836
+      ],
+      [
+        "ES",
+        2468
+      ],
+      [
+        "IT",
+        1515
+      ],
+      [
+        "US",
+        1286
+      ],
+      [
+        "TR",
+        572
+      ],
+      [
+        "UK",
+        434
+      ],
+      [
+        "AL",
+        409
+      ],
+      [
+        "EN",
+        337
+      ],
+      [
+        "BE",
+        326
+      ],
+      [
+        "CA",
+        308
+      ],
+      [
+        "IN",
+        299
+      ],
+      [
+        "DE",
+        252
+      ],
+      [
+        "AF",
+        244
+      ],
+      [
+        "SG",
+        213
+      ],
+      [
+        "EX",
+        208
+      ],
+      [
+        "YU",
+        207
+      ],
+      [
+        "FM",
+        205
+      ],
+      [
+        "CH",
+        171
+      ],
+      [
+        "NL",
+        162
+      ],
+      [
+        "LA",
+        155
+      ],
+      [
+        "RO",
+        146
+      ],
+      [
+        "BR",
+        144
+      ],
+      [
+        "SE",
+        143
+      ],
+      [
+        "PK",
+        136
+      ],
+      [
+        "RS",
+        134
+      ]
+    ],
+    "quality_flags": {
+      "hd": 1676,
+      "fhd": 4885,
+      "hevc": 92,
+      "uhd": 694
+    },
+    "with_epg": 3174,
+    "with_logo": 136267,
+    "samples": [
+      {
+        "title": "TF1 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "FRANCE 2 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "FRANCE 3 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "FRANCE 4 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "FRANCE 5 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "M6 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "ARTE HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "LCP HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "W9 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "TMC HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "TFX HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "GULLI HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "BFM TV HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "CNEWS HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "LCI  HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "FRANCE INFO HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "CSTAR HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "T18 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "NOVO 19 HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      },
+      {
+        "title": "TF1 SERIES FILMS HD",
+        "group": "FRANCE HD",
+        "url_host_hash": "1409e0d147:80"
+      }
+    ]
+  },
+  "xmltv_summary": {}
+}
