@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.neostream.app.databinding.ActivityMainBinding
 import com.neostream.app.ui.imports.AddSourceActivity
@@ -14,6 +15,14 @@ private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
   private lateinit var vb: ActivityMainBinding
+
+  private val addSourceLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    if (result.resultCode == RESULT_OK) {
+      Toast.makeText(this, "Playlist importée ✅", Toast.LENGTH_LONG).show()
+      // Optionally, bring focus back to play/sources inputs for TV remotes
+      vb.inputUrl.requestFocus()
+    }
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -33,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     // Open AddSource directly (M3U/Xtream toggle)
     vb.btnSources.setOnClickListener {
-      startActivity(Intent(this, AddSourceActivity::class.java))
+      addSourceLauncher.launch(Intent(this, AddSourceActivity::class.java))
     }
 
     vb.btnPlay.setOnClickListener {

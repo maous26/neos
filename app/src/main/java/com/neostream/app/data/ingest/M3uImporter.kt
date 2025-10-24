@@ -9,41 +9,45 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.buffer
-import okio.source
 
 class M3uImporter(private val ctx: Context, private val client: OkHttpClient = OkHttpClient()) {
 
   suspend fun importFromUrl(url: String) = withContext(Dispatchers.IO) {
     val dao = NeostreamDb.get(ctx).dao()
     val resp = client.newCall(Request.Builder().url(url).build()).execute()
-    resp.body!!.source().buffer().use { buf ->
-      val batch = ArrayList<ChannelEntity>(4000)
-      var pendingTitle: String? = null
-      var pendingGroup: String? = null
-      var pendingHasEpg = false
+    val body = resp.body ?: run { resp.close(); return@withContext }
+    val buf = body.source().buffer()
 
-      fun push(urlLine: String) {
-        val title = pendingTitle ?: "Unknown"
-        val group = pendingGroup
-        val kind = detectKind(title, group)
-        val qual = detectQuality("$title ${group.orEmpty()}")
-        val country = detectCountry(title, group)
-        batch += ChannelEntity(
-          title = title, url = urlLine.trim(),
-          groupName = group, countryTag = country, quality = qual, kind = kind,
-          hasEpg = pendingHasEpg, isNew = true
-        )
-        pendingTitle = null; pendingGroup = null; pendingHasEpg = false
-        if (batch.size >= 4000) { dao.insertAll(batch.toList()); batch.clear() }
-      }
+    val batch = ArrayList<ChannelEntity>(4000)
+    var pendingTitle: String? = null
+    var pendingGroup: String? = null
+    var pendingHasEpg = false
 
+    suspend fun flush() {
+      if (batch.isNotEmpty()) { dao.insertAll(batch.toList()); batch.clear() }
+    }
+
+    fun push(urlLine: String) {
+      val title = pendingTitle ?: "Unknown"
+      val group = pendingGroup
+      val kind = detectKind(title, group)
+      val qual = detectQuality("$title ${group.orEmpty()}")
+      val country = detectCountry(title, group)
+      batch += ChannelEntity(
+        title = title, url = urlLine.trim(),
+        groupName = group, countryTag = country, quality = qual, kind = kind,
+        hasEpg = pendingHasEpg, isNew = true
+      )
+      pendingTitle = null; pendingGroup = null; pendingHasEpg = false
+    }
+
+    try {
       while (true) {
         val line = buf.readUtf8Line() ?: break
         val l = line.trim()
         if (l.isEmpty() || l.startsWith("#EXTM3U")) continue
         if (l.startsWith("#EXTGRP:")) { pendingGroup = l.substringAfter(":", "").ifBlank { pendingGroup }; continue }
         if (l.startsWith("#EXTINF")) {
-          // attrs
           val title = l.substringAfter(",", "Unknown").trim()
           pendingTitle = title
           pendingHasEpg = l.contains("tvg-id=")
@@ -52,9 +56,16 @@ class M3uImporter(private val ctx: Context, private val client: OkHttpClient = O
           continue
         }
         if (l.startsWith("#")) continue
-        if (l.startsWith("http")) { push(l) }
+        if (l.startsWith("http")) {
+          push(l)
+          if (batch.size >= 4000) { flush() }
+        }
       }
-      if (batch.isNotEmpty()) dao.insertAll(batch)
+      flush()
+    } finally {
+      try { buf.close() } catch (_: Throwable) {}
+      try { body.close() } catch (_: Throwable) {}
+      try { resp.close() } catch (_: Throwable) {}
     }
   }
 }
