@@ -64,6 +64,11 @@
     <activity android:name=".ui.browse.QualityFilterActivity" 
               android:exported="false"
               android:label="Qualité" />
+    
+    <!-- Debug activity -->
+    <activity android:name=".ui.DebugActivity" 
+              android:exported="false"
+              android:label="Debug" />
 
     <!-- Smart VPN service declaration -->
     <service

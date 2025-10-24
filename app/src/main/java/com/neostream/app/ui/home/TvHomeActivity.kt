@@ -72,6 +72,12 @@ class TvHomeActivity : AppCompatActivity() {
     vb.cardImport.setOnClickListener {
       importLauncher.launch(Intent().setClassName(this, "com.neostream.app.ui.imports.AddSourceActivity"))
     }
+    
+    // Debug (long press on title)
+    vb.root.findViewById<android.widget.TextView>(com.neostream.app.R.id.tvTitle)?.setOnLongClickListener {
+      startActivity(Intent(this, com.neostream.app.ui.DebugActivity::class.java))
+      true
+    }
   }
 
   private fun loadStats() {
