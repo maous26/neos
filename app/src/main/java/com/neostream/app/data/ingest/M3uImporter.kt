@@ -12,19 +12,45 @@ import okio.buffer
 
 class M3uImporter(private val ctx: Context, private val client: OkHttpClient = OkHttpClient()) {
 
-  suspend fun importFromUrl(url: String) = withContext(Dispatchers.IO) {
+  /**
+   * Télécharge et importe une playlist M3U.
+   * - Vide la table existante
+   * - Retourne le nombre d'entrées insérées
+   * - Lève une exception si la réponse HTTP n'est pas 2xx ou si 0 chaînes détectées
+   */
+  suspend fun importFromUrl(url: String): Int = withContext(Dispatchers.IO) {
     val dao = NeostreamDb.get(ctx).dao()
-    val resp = client.newCall(Request.Builder().url(url).build()).execute()
-    val body = resp.body ?: run { resp.close(); return@withContext }
+
+    val req = Request.Builder()
+      .url(url)
+      .header("User-Agent", "Mozilla/5.0 (Android TV) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0 Safari/537.36")
+      .build()
+
+    val resp = client.newCall(req).execute()
+    if (!resp.isSuccessful) {
+      val code = resp.code
+      try { resp.close() } catch (_: Throwable) {}
+      throw IllegalStateException("HTTP $code sur le téléchargement M3U")
+    }
+
+    val body = resp.body ?: run { resp.close(); throw IllegalStateException("Réponse vide") }
     val buf = body.source().buffer()
+
+    // Reset previous content to avoid mixing old/new
+    dao.clear()
 
     val batch = ArrayList<ChannelEntity>(4000)
     var pendingTitle: String? = null
     var pendingGroup: String? = null
     var pendingHasEpg = false
+    var inserted = 0
 
     suspend fun flush() {
-      if (batch.isNotEmpty()) { dao.insertAll(batch.toList()); batch.clear() }
+      if (batch.isNotEmpty()) {
+        dao.insertAll(batch.toList())
+        inserted += batch.size
+        batch.clear()
+      }
     }
 
     fun push(urlLine: String) {
@@ -41,11 +67,14 @@ class M3uImporter(private val ctx: Context, private val client: OkHttpClient = O
       pendingTitle = null; pendingGroup = null; pendingHasEpg = false
     }
 
+    var sawHeader = false
+
     try {
       while (true) {
         val line = buf.readUtf8Line() ?: break
         val l = line.trim()
-        if (l.isEmpty() || l.startsWith("#EXTM3U")) continue
+        if (l.isEmpty()) continue
+        if (l.startsWith("#EXTM3U")) { sawHeader = true; continue }
         if (l.startsWith("#EXTGRP:")) { pendingGroup = l.substringAfter(":", "").ifBlank { pendingGroup }; continue }
         if (l.startsWith("#EXTINF")) {
           val title = l.substringAfter(",", "Unknown").trim()
@@ -67,5 +96,13 @@ class M3uImporter(private val ctx: Context, private val client: OkHttpClient = O
       try { body.close() } catch (_: Throwable) {}
       try { resp.close() } catch (_: Throwable) {}
     }
+
+    if (!sawHeader && inserted == 0) {
+      throw IllegalStateException("Le contenu obtenu n'est pas une M3U valide. Vérifiez l'URL/identifiants.")
+    }
+    if (inserted == 0) {
+      throw IllegalStateException("Aucune chaîne détectée dans la playlist.")
+    }
+    inserted
   }
 }
