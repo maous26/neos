@@ -13,6 +13,7 @@ import com.neostream.app.data.ingest.M3uImporter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.net.URI
+import android.app.Activity
 
 private const val TAG = "AddSourceActivity"
 
@@ -88,12 +89,11 @@ class AddSourceActivity : AppCompatActivity() {
         SecurePrefs(this@AddSourceActivity).setPlaylistUrl(url)
         Log.d(TAG, "URL saved to secure prefs")
         
-        // Import
-        Toast.makeText(this@AddSourceActivity, "Téléchargement de la playlist...", Toast.LENGTH_SHORT).show()
-        M3uImporter(this@AddSourceActivity).importFromUrl(url)
-        
-        Log.d(TAG, "Import completed successfully")
-        Toast.makeText(this@AddSourceActivity, "✅ Playlist importée avec succès!", Toast.LENGTH_LONG).show()
+        // Import et compte
+        val count = M3uImporter(this@AddSourceActivity).importFromUrl(url)
+        Log.d(TAG, "Import completed successfully with $count channels")
+        Toast.makeText(this@AddSourceActivity, "$count chaînes importées ✅", Toast.LENGTH_LONG).show()
+        setResult(Activity.RESULT_OK)
         
         // Wait a bit so user can see success message
         delay(1500)
